@@ -1,0 +1,30 @@
+{
+    "manifest_version": 2,
+    "name": "Tid",
+    "version": "0.1",
+  
+    "description": "Clock extension.",
+    "homepage_url": "https://github.com/Limpan/tid",
+    "icons": {
+      "48": "icons/alarm.svg",
+      "96": "icons/alarm.svg"
+    },
+  
+    "background":
+        {
+            "scripts": ["background.js"]
+        },
+  
+    "browser_action": {
+      "default_icon": "icons/alarm.svg"
+    },
+
+    "permissions": [
+      "alarms",
+      "notifications"
+    ],
+
+    "omnibox": {
+      "keyword": "tid"
+    }
+}

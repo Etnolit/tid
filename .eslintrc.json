@@ -1,0 +1,14 @@
+{
+    "root": true,
+    "plugins": [],
+    "extends": [
+        "eslint:recommended",
+        "prettier"
+    ],
+    "env": {
+        "es6":true,
+        "browser": true,
+        "jest": true,
+        "commonjs": true
+    }
+}

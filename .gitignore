@@ -1,0 +1,15 @@
+# MacOS
+.DS_Store
+
+# Node.js modules
+node_modules/
+
+# IDE configs
+.vscode/
+
+# Log files
+*.log
+
+# Ignore build artifacts
+dist/
+build/

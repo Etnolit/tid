@@ -1,0 +1,70 @@
+:root {
+    --color-fg: rgb(250, 250, 250);
+    --color-glow: rgb(250, 176, 27);
+}
+
+body {
+    color: var(--color-fg);
+    font-family: 'Rubik', sans-serif;
+
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(150deg, rgba(255,255,255,0), rgb(66,27,158)),
+                linear-gradient(70deg, rgb(238, 44, 235), rgb(59, 200, 240));
+    overflow: hidden;
+}
+
+#clock {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    display: flex;
+}
+
+#left-numbers, #right-numbers {
+    width: 50vw;
+    display: flex;
+}
+
+#left-numbers {
+    justify-content: right;
+}
+
+#right-numbers {
+    justify-content: left;
+}
+
+// .separator { }
+
+.digit, .separator {
+    font-size: 20vw;
+    text-align: center;
+    text-shadow: 0 0 0.03em var(--color-glow);
+}
+
+.digit {
+    width: 12vw;
+    display: inline-block;
+}
+
+#bar-outer {
+    position: absolute;
+    top: 70%;
+    height: 1.4vh;
+    width: 90%;
+    left: 5%;
+}
+
+#bar {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgb(250, 250, 250);
+    border-radius: 0.4vh;
+    box-shadow: 0 0 0.6vh var(--color-glow);
+}
