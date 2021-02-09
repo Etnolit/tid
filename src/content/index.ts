@@ -101,3 +101,5 @@ function updateClock() {
 // Don't Panic.
 // I love deadlines. I love the whooshing noise they make as they go by.
 // Nothing travels faster than the speed of light, with the possible exception of bad news, which obeys its own special laws.
+
+export {}

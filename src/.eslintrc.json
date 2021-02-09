@@ -13,7 +13,6 @@
     ],
     "env": {
         "browser": true,
-        "jest": true,
         "webextensions": true
     }
 }
