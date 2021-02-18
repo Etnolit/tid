@@ -1,4 +1,4 @@
-let digit5: HTMLElement, digit4: HTMLElement, digit3: HTMLElement, digit2: HTMLElement, digit1: HTMLElement, digit0: HTMLElement, bar: HTMLElement
+let clock: HTMLElement, digit5: HTMLElement, digit4: HTMLElement, digit3: HTMLElement, digit2: HTMLElement, digit1: HTMLElement, digit0: HTMLElement, bar: HTMLElement
 let timerTS = 0
 let duration = 0
 
@@ -12,15 +12,8 @@ document.addEventListener('dblclick', () => {
 })
 
 
-/*
-browser.runtime.onMessage.addListener(request => {
-    console.log(request)
-    return Promise.resolve({response: "Hi from content script"});
-})
-*/
-
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('Tab ready!')
+    clock = <HTMLElement>document.getElementById('clock')
 
     digit0 = <HTMLElement>document.querySelector('#digit0')
     digit1 = <HTMLElement>document.querySelector('#digit1')
@@ -36,17 +29,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 function handleResponse(message: any) {
-    console.log(message.timestamp)
-    console.log(message.duration)
-    console.log(message.tabId)
-
-
     timerTS = message.timestamp
     duration = message.duration
     
-    console.log('Starting clock...')
     updateClock()
-    timerUpdateClock = window.setInterval(updateClock, 1000)
+    timerUpdateClock = window.setInterval(updateClock, 100)
 }
 
 function handleError(reason: any) {
@@ -54,26 +41,25 @@ function handleError(reason: any) {
 }
 
 
-function getSetupData() {
+function getSetupData(): void {
     const sending = browser.runtime.sendMessage({type: 'setup'})
     sending.then(handleResponse, handleError)
 }
 
 
-function updateDigit(digit: HTMLElement, value: number | string) {
+function updateDigit(digit: HTMLElement, value: number | string): void {
     digit.textContent = value.toString()
 }
 
 
-function updateClock() {
+function updateClock(): void {
     // Calculate time left
-    const timeLeft = timerTS - Math.floor(+new Date() / 1000)
-    console.log(timeLeft)
+    const timeLeft = Math.floor((timerTS - Date.now()) / 1000)
 
     if (timeLeft < 0) {
-        console.log('End')
-
         window.clearInterval(timerUpdateClock)
+
+        clock.classList.add('flash')
 
         // Request notification
 
@@ -88,9 +74,10 @@ function updateClock() {
         updateDigit(digit3, Math.floor(m / 10) % 10)
         updateDigit(digit4, m >= 100 ? Math.floor(m / 100) % 10 : '')
         updateDigit(digit5, m >= 1000 ? Math.floor(m / 1000) % 10 : '')
-    
-        const width:number = timeLeft / duration * 100
-        bar.style.width = width + '%'        
+
+        // Update bar width
+        const width:number = timeLeft / (duration / 1000) * 100
+        bar.style.width = width + '%'
     }
 
 }

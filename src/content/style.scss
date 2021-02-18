@@ -1,6 +1,7 @@
 :root {
     --color-fg: rgb(250, 250, 250);
     --color-glow: rgb(250, 176, 27);
+    --color-flash: rgb(250, 60, 10);
 }
 
 body {
@@ -67,4 +68,17 @@ body {
     background-color: rgb(250, 250, 250);
     border-radius: 0.4vh;
     box-shadow: 0 0 0.6vh var(--color-glow);
+}
+
+.flash .digit {
+    animation: text-flash 1s infinite;
+}
+
+@keyframes text-flash {
+    10%, 30%, 50% {
+        text-shadow: 0 0 0.06em var(--color-flash);
+    }
+    0%, 20%, 40%, 60% {
+        text-shadow: 0 0 0.03em var(--color-glow);
+    }
 }

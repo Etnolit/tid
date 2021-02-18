@@ -1,4 +1,4 @@
-import { processCommandString, Lexer, Tokenizer } from './command'
+import { Parser, Lexer, Tokenizer } from './parser'
 
 
 type Tab = browser.tabs.Tab
@@ -38,7 +38,7 @@ function initExtension() {
 
 
   browser.browserAction.onClicked.addListener(function () {
-    createTimerPage(300)
+    createTimerPage(Date.now(), 300000)
   })
 
 
@@ -56,21 +56,20 @@ function initExtension() {
   browser.omnibox.onInputEntered.addListener((command: string, disposition: browser.omnibox.OnInputEnteredDisposition): void => {
     console.log(command)
     
-    const timerDuration = processCommandString(command)
+    const now = Date.now()
+    const duration = Parser(Lexer(command, Tokenizer), now)
     
-    createTimerPage(timerDuration)
+    createTimerPage(now, duration)
     
-//    disposition = "newForegroundTab"
+    disposition = "newForegroundTab"
   })
 
 }
 
-function createTimerPage(time: number) {
+function createTimerPage(start: number, duration: number) {
   function onCreated(tab: Tab): void {
-    console.log(`Created tab ${tab.id}`)
-    console.log(`time ${time}`)
     if (tab.id) {
-      allTimers.push({tabId: tab.id, timestamp: Math.ceil(+new Date() / 1000) + time, duration: time})
+      allTimers.push({tabId: tab.id, timestamp: start + duration, duration: duration})
     }
   }
   
@@ -78,9 +77,7 @@ function createTimerPage(time: number) {
   function onError(error: Error): void {
     console.log(`Error: ${error}`)
   }
-  
-  console.log('Creating page')
-  
+    
   const newTab = browser.tabs.create({
     url: "/page.html"
   })

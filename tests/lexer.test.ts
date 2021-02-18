@@ -1,4 +1,5 @@
-import { Lexer, Tokenizer } from '../src/background/command' 
+import { Lexer, Tokenizer } from '../src/background/parser'
+
 
 describe('Lexer and Tokenizer', () => {
     test('is handling empty command', () => {
@@ -38,7 +39,11 @@ describe('Lexer and Tokenizer', () => {
     test('recognizes extra whitespace', () => {
         expect(Lexer('  1', Tokenizer)).toEqual([{value:'  ', type:'whitespace'}, {value:'1', type:'number'}])
         expect(Lexer('1 ', Tokenizer)).toEqual([{value:'1', type:'number'}, {value:' ', type:'whitespace'}])
-        expect(Lexer(' 1  ', Tokenizer)).toEqual([{value:' ', type:'whitespace'}, {value:'1', type:'number'}, {value:'  ', type:'whitespace'}])
+        expect(Lexer(' 1  ', Tokenizer)).toEqual([
+            {value:' ', type:'whitespace'}, 
+            {value:'1', type:'number'}, 
+            {value:'  ', type:'whitespace'}
+        ])
     })
 
     test('recognizes operator and number', () => {
