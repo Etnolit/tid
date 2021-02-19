@@ -1,3 +1,5 @@
+import { browser } from 'webextension-polyfill-ts'
+
 let clock: HTMLElement, digit5: HTMLElement, digit4: HTMLElement, digit3: HTMLElement, digit2: HTMLElement, digit1: HTMLElement, digit0: HTMLElement, bar: HTMLElement
 let timerTS = 0
 let duration = 0

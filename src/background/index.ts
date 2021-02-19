@@ -1,9 +1,10 @@
+import { browser } from 'webextension-polyfill-ts'
 import { Parser, Lexer, Tokenizer } from './parser'
 
 
 type Tab = browser.tabs.Tab
 
-interface Timer {
+type Timer = {
   tabId: number
   timestamp: number
   duration: number
@@ -15,7 +16,7 @@ let allTimers: Timer[] = []
 function initExtension() {
 
   browser.runtime.onMessage.addListener(
-    (request, sender, sendResponse) => {
+    (request, sender) => {
       console.log(`Received message: ${request}, ${sender}`)
       
       allTimers = allTimers.filter(timer => timer.timestamp > Math.ceil(+new Date() / 1000))
@@ -26,7 +27,8 @@ function initExtension() {
 
       if (request.type === 'setup') {
         console.log('Sending setup data')
-        sendResponse(currentTimer)
+        // sendResponse(currentTimer)
+        return Promise.resolve(currentTimer)
       }
 
       if (request.type === 'notify') {

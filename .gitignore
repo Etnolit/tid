@@ -13,3 +13,4 @@ node_modules/
 # Ignore build artifacts
 dist/
 build/
+artifacts/

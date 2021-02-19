@@ -7,19 +7,19 @@ const UNITS_IN_MILLIS: { [unit: string]: number} = {
   s: 1000
 }
 
-interface Token {
+type Token = {
   type: string
   value: string
 }
 
-interface Stream {
+type Stream = {
   peek(): string | null
   match(pattern: RegExp, consume: boolean): string | null
   next(): string | null
   isEnd(): boolean
 }
 
-interface Tokenizer {
+type Tokenizer = {
   (stream: Stream): string
 }
 
@@ -158,7 +158,6 @@ export function Parser(tokens: Token[], now?: number): number {
     if (nextToken.type === 'unit') {
       return Number(currentToken.value) * UNITS_IN_MILLIS[nextToken.value]
     }
-
   }
 
   if (currentToken.type === 'time') {
