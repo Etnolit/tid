@@ -1,6 +1,6 @@
 {
   "name": "tid3",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Timer",
   "main": "index.js",
   "repository": "https://github.com/Etnolit/tid",
