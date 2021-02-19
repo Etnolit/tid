@@ -4,19 +4,19 @@
     "version": "0.1",
   
     "description": "Clock extension.",
-    "homepage_url": "https://github.com/Limpan/tid",
+    "homepage_url": "https://etnolit.se/tid",
     "icons": {
-      "48": "icons/alarm.svg",
-      "96": "icons/alarm.svg"
+      "48": "assets/icons/alarm.svg",
+      "96": "assets/icons/alarm.svg"
     },
   
     "background":
-        {
-            "scripts": ["background.js"]
-        },
-  
+      {
+          "scripts": ["js/background.js"]
+      },
+    
     "browser_action": {
-      "default_icon": "icons/alarm.svg"
+      "default_icon": "assets/icons/alarm.svg"
     },
 
     "permissions": [
