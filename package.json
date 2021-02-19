@@ -1,9 +1,9 @@
 {
   "name": "tid3",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Timer",
   "main": "index.js",
-  "repository": "https://github.com/Limpan",
+  "repository": "https://github.com/Etnolit/tid",
   "author": "Linus Törngren",
   "license": "MIT",
   "scripts": {
