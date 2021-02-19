@@ -1,9 +1,9 @@
 {
     "manifest_version": 2,
     "name": "Tid",
-    "version": "0.1",
+    "version": "0.1.0",
   
-    "description": "Clock extension.",
+    "description": "A simple extension for creating timers in browser tabs.",
     "homepage_url": "https://etnolit.se/tid",
     "icons": {
       "48": "assets/icons/alarm.svg",
