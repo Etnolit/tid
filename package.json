@@ -1,5 +1,5 @@
 {
-  "name": "tid3",
+  "name": "tid",
   "version": "0.1.3",
   "description": "Timer",
   "main": "index.js",
@@ -20,6 +20,7 @@
     "sass": "sass --no-source-map ./src/content:./dist/css",
     "sass:watch": "sass --watch --no-source-map ./src/content:./dist/css",
     "test": "jest",
+    "test:coverage": "jest --coverage --coverageDirectory=\"coverage\" --collectCoverageFrom=\"./src/**/*.ts\"",
     "test:watch": "jest --watch",
     "webpack": "webpack --config webpack.config.js",
     "webpack:watch": "webpack --watch --config webpack.config.js"
