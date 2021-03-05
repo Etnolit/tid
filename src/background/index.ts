@@ -15,41 +15,20 @@ let allTimers: Timer[] = []
 
 export function initExtension(): void {
 
-  browser.runtime.onMessage.addListener(
-    (request, sender) => {
-      allTimers = allTimers.filter(timer => timer.timestamp > Math.ceil(+new Date() / 1000))
-
-      const currentTimer = allTimers.find(timer => timer.tabId == sender.tab?.id)
-
-      if (request.type === 'setup') {
-        console.log('Sending setup data')
-        // sendResponse(currentTimer)
-        return Promise.resolve(currentTimer)
-      }
-
-      if (request.type === 'notify') {
-        console.log('Request for notification.')
-        // TODO: Move notification code here.
-      }
-    }
-  )
-
+  browser.runtime.onMessage.addListener(handleMessage)
 
   browser.browserAction.onClicked.addListener(function () {
     createTimerPage(Date.now(), 300000)
   })
 
-
   browser.omnibox.setDefaultSuggestion({
     description: `Start a timer.`
   })
-
 
   // onInputStarted
   // onInputChanged
   // onInputEntered
   // onInputCancelled
-
 
   browser.omnibox.onInputEntered.addListener(
     (command: string, disposition: browser.omnibox.OnInputEnteredDisposition): void => {
@@ -82,6 +61,42 @@ export function createTimerPage(start: number, duration: number): void {
   })
   
   newTab.then(onCreated, onError)
+}
+
+
+export function handleMessage(request: MessageEvent, sender: browser.runtime.MessageSender): Promise<Timer | undefined> {
+  allTimers = allTimers.filter(timer => timer.timestamp > Math.ceil(+new Date() / 1000))
+
+  const currentTimer = allTimers.find(timer => timer.tabId == sender.tab?.id)
+
+  if (request.type === 'setup') {
+    console.log('Sending setup data')
+
+    return Promise.resolve(currentTimer)
+  }
+
+  if (request.type === 'notify') {
+    console.log('Request for notification received.')
+
+    const sending = browser.notifications.create('', {
+      type: "basic",
+      title: "Time's up!",
+      message: "",
+      iconUrl: "assets/icons/alarm.svg"
+    })
+
+    const handleResponse = (message?: any) => {
+      console.log('Notification created.')
+    }
+    
+    const handleError = (reason: any) => {
+      console.log('Error: ${reason}')
+    }
+
+    sending.then(handleResponse, handleError)
+  }
+
+  return Promise.reject()
 }
 
 

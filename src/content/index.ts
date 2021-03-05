@@ -54,6 +54,17 @@ export function updateClock(): void {
         clock.flash()
 
         // Request notification
+        const sending = browser.runtime.sendMessage({type: 'notify'})
+
+        const handleResponse = (message?: any) => {
+            console.log('Notification request sent.')
+        }
+
+        const handleError = (reason: any) => {
+            console.log('Error: ${reason}')
+        }
+
+        sending .then(handleResponse, handleError)
 
     } else {
         // Calculate and update numbers on screen
@@ -72,8 +83,3 @@ export function updateClock(): void {
     }
 
 }
-// Time Quotes
-// Time is an illusion. Lunchtime doubly so.
-// Don't Panic.
-// I love deadlines. I love the whooshing noise they make as they go by.
-// Nothing travels faster than the speed of light, with the possible exception of bad news, which obeys its own special laws.
