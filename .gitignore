@@ -11,5 +11,7 @@ node_modules/
 *.log
 
 # Ignore build artifacts
-dist/
+artifacts/
 build/
+coverage/
+dist/

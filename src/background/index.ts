@@ -1,9 +1,10 @@
+import { browser } from 'webextension-polyfill-ts'
 import { Parser, Lexer, Tokenizer } from './parser'
 
 
 type Tab = browser.tabs.Tab
 
-interface Timer {
+type Timer = {
   tabId: number
   timestamp: number
   duration: number
@@ -12,48 +13,25 @@ interface Timer {
 let allTimers: Timer[] = []
 
 
-function initExtension() {
+export function initExtension(): void {
 
-  browser.runtime.onMessage.addListener(
-    (request, sender, sendResponse) => {
-      console.log(`Received message: ${request}, ${sender}`)
-      
-      allTimers = allTimers.filter(timer => timer.timestamp > Math.ceil(+new Date() / 1000))
-
-      const currentTimer = allTimers.find(timer => timer.tabId == sender.tab?.id)
-
-      console.log(sender)
-
-      if (request.type === 'setup') {
-        console.log('Sending setup data')
-        sendResponse(currentTimer)
-      }
-
-      if (request.type === 'notify') {
-        console.log('Request for notification.')
-        // TODO: Move notification code here.
-      }
-    }
-  )
-
+  browser.runtime.onMessage.addListener(handleMessage)
 
   browser.browserAction.onClicked.addListener(function () {
     createTimerPage(Date.now(), 300000)
   })
 
-
   browser.omnibox.setDefaultSuggestion({
     description: `Start a timer.`
   })
-
 
   // onInputStarted
   // onInputChanged
   // onInputEntered
   // onInputCancelled
 
-
-  browser.omnibox.onInputEntered.addListener((command: string, disposition: browser.omnibox.OnInputEnteredDisposition): void => {
+  browser.omnibox.onInputEntered.addListener(
+    (command: string, disposition: browser.omnibox.OnInputEnteredDisposition): void => {
     console.log(command)
     
     const now = Date.now()
@@ -66,7 +44,7 @@ function initExtension() {
 
 }
 
-function createTimerPage(start: number, duration: number) {
+export function createTimerPage(start: number, duration: number): void {
   function onCreated(tab: Tab): void {
     if (tab.id) {
       allTimers.push({tabId: tab.id, timestamp: start + duration, duration: duration})
@@ -83,6 +61,42 @@ function createTimerPage(start: number, duration: number) {
   })
   
   newTab.then(onCreated, onError)
+}
+
+
+export function handleMessage(request: MessageEvent, sender: browser.runtime.MessageSender): Promise<Timer | undefined> {
+  allTimers = allTimers.filter(timer => timer.timestamp > Math.ceil(+new Date() / 1000))
+
+  const currentTimer = allTimers.find(timer => timer.tabId == sender.tab?.id)
+
+  if (request.type === 'setup') {
+    console.log('Sending setup data')
+
+    return Promise.resolve(currentTimer)
+  }
+
+  if (request.type === 'notify') {
+    console.log('Request for notification received.')
+
+    const sending = browser.notifications.create('', {
+      type: "basic",
+      title: "Time's up!",
+      message: "",
+      iconUrl: "assets/icons/alarm.svg"
+    })
+
+    const handleResponse = (message?: any) => {
+      console.log('Notification created.')
+    }
+    
+    const handleError = (reason: any) => {
+      console.log('Error: ${reason}')
+    }
+
+    sending.then(handleResponse, handleError)
+  }
+
+  return Promise.reject()
 }
 
 

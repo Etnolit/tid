@@ -1,0 +1,31 @@
+{
+    "manifest_version": 2,
+    "name": "Tid",
+    "version": "__VERSION__",
+    "author": "Linus Törngren, Etnolit",
+  
+    "description": "A simple extension for creating timers in browser tabs.",
+    "homepage_url": "https://etnolit.se/tid",
+
+    "icons": {
+      "48": "assets/icons/alarm.svg",
+      "96": "assets/icons/alarm.svg"
+    },
+  
+    "background":
+      {
+          "scripts": ["js/background.js"]
+      },
+    
+    "browser_action": {
+      "default_icon": "assets/icons/alarm.svg"
+    },
+
+    "permissions": [
+      "notifications"
+    ],
+
+    "omnibox": {
+      "keyword": "tid"
+    }
+}
