@@ -9,8 +9,8 @@
   "scripts": {
     "build": "yarn clean && yarn webpack && yarn sass && yarn copy",
     "build:release": "yarn build && yarn package",
-    "build:chrome": "export VERSION=$(awk -F'\"' '/\"version\": \".+\"/{ print $4; exit; }' ./package.json) && awk '{gsub(/__VERSION__/,ENVIRON[\"VERSION\"])}1' ./src/manifest.chrome.json > ./dist/manifest.json",
-    "build:firefox": "export VERSION=$(awk -F'\"' '/\"version\": \".+\"/{ print $4; exit; }' ./package.json) && awk '{gsub(/__VERSION__/,ENVIRON[\"VERSION\"])}1' ./src/manifest.firefox.json > ./dist/manifest.json",
+    "build:chrome": "yarn build && export VERSION=$(awk -F'\"' '/\"version\": \".+\"/{ print $4; exit; }' ./package.json) && awk '{gsub(/__VERSION__/,ENVIRON[\"VERSION\"])}1' ./src/manifest.chrome.json > ./dist/manifest.json",
+    "build:firefox": "yarn build && export VERSION=$(awk -F'\"' '/\"version\": \".+\"/{ print $4; exit; }' ./package.json) && awk '{gsub(/__VERSION__/,ENVIRON[\"VERSION\"])}1' ./src/manifest.firefox.json > ./dist/manifest.json",
     "clean": "rm -r ./dist/*",
     "copy": "cp ./src/content/page.html ./dist && cp -R ./assets ./dist",
     "lint": "yarn lint:eslint && yarn lint:web-ext",
