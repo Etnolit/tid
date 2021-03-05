@@ -13,17 +13,13 @@ type Timer = {
 let allTimers: Timer[] = []
 
 
-function initExtension() {
+export function initExtension(): void {
 
   browser.runtime.onMessage.addListener(
     (request, sender) => {
-      console.log(`Received message: ${request}, ${sender}`)
-      
       allTimers = allTimers.filter(timer => timer.timestamp > Math.ceil(+new Date() / 1000))
 
       const currentTimer = allTimers.find(timer => timer.tabId == sender.tab?.id)
-
-      console.log(sender)
 
       if (request.type === 'setup') {
         console.log('Sending setup data')
@@ -55,7 +51,8 @@ function initExtension() {
   // onInputCancelled
 
 
-  browser.omnibox.onInputEntered.addListener((command: string, disposition: browser.omnibox.OnInputEnteredDisposition): void => {
+  browser.omnibox.onInputEntered.addListener(
+    (command: string, disposition: browser.omnibox.OnInputEnteredDisposition): void => {
     console.log(command)
     
     const now = Date.now()
@@ -68,7 +65,7 @@ function initExtension() {
 
 }
 
-function createTimerPage(start: number, duration: number) {
+export function createTimerPage(start: number, duration: number): void {
   function onCreated(tab: Tab): void {
     if (tab.id) {
       allTimers.push({tabId: tab.id, timestamp: start + duration, duration: duration})

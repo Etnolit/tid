@@ -50,7 +50,7 @@ body {
     display: inline-block;
 }
 
-#bar-outer {
+#bar {
     position: absolute;
     top: 70%;
     height: 1.4vh;
@@ -58,7 +58,7 @@ body {
     left: 5%;
 }
 
-#bar {
+#inner-bar {
     position: absolute;
     width: 100%;
     top: 0;
