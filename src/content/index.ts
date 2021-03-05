@@ -51,7 +51,7 @@ export function updateClock(): void {
     if (timeLeft < 0) {
         window.clearInterval(timerUpdateClock)
 
-        // clock.classList.add('flash')
+        clock.flash()
 
         // Request notification
 

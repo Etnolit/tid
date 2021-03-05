@@ -51,6 +51,10 @@ export class DOMClock {
     public render(): HTMLElement{
         return this.clock
     }
+
+    public flash(): void {
+        this.clock.classList.add('flash')
+    }
 }
 
 
