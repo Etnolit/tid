@@ -1,6 +1,6 @@
 import { Parser } from '../src/background/parser'
 
-const NOW = 1613651325374  // 2021-02-18T12:28:45.374Z
+const NOW = 1613651325374  // 2021-02-18T12:28:45.374Z  <-- UTC!
 
 
 describe('Parser', () => {
@@ -38,14 +38,16 @@ describe('Parser', () => {
 
     test('evaluates constant time before midnight', () => {
         const tokens = [{value:'14:30', type:'time'}]
-        const erv = 2 * 3600000 + 1 * 60000 + 14 * 1000 + 626  // 2h, 1m, 14s, 626ms
+        const offset = new Date().getTimezoneOffset()
+        const erv = 2 * 3600000 + (1 + offset) * 60000 + 14 * 1000 + 626  // 2h, 1m, 14s, 626ms
 
         expect(Parser(tokens, NOW)).toBe(erv)
     })
 
     test('evaluates constant time after midnight', () => {
         const tokens = [{value:'10:30', type:'time'}]
-        const erv = 22 * 3600000 + 1 * 60000 + 14 * 1000 + 626  // 22h, 1m, 14s, 626ms
+        const offset = new Date().getTimezoneOffset()
+        const erv = 22 * 3600000 + (1 + offset) * 60000 + 14 * 1000 + 626  // 22h, 1m, 14s, 626ms
 
         expect(Parser(tokens, NOW)).toBe(erv)
     })

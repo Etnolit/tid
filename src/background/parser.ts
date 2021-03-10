@@ -162,7 +162,8 @@ export function Parser(tokens: Token[], now?: number): number {
 
   if (currentToken.type === 'time') {
     const [hours, minutes] = currentToken.value.split(':').map(val => Number(val))
-    let delta = hours * 3600000 + minutes * 60000 - now % MILLIS_IN_24H
+    const offset = new Date().getTimezoneOffset()
+    let delta = hours * 3600000 + (minutes + offset) * 60000 - now % MILLIS_IN_24H
     delta =  delta > 0 ? delta : delta + MILLIS_IN_24H
 
     // time
