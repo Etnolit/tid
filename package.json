@@ -12,7 +12,7 @@
     "build:chrome": "yarn build && export VERSION=$(awk -F'\"' '/\"version\": \".+\"/{ print $4; exit; }' ./package.json) && awk '{gsub(/__VERSION__/,ENVIRON[\"VERSION\"])}1' ./src/manifest.chrome.json > ./dist/manifest.json",
     "build:firefox": "yarn build && export VERSION=$(awk -F'\"' '/\"version\": \".+\"/{ print $4; exit; }' ./package.json) && awk '{gsub(/__VERSION__/,ENVIRON[\"VERSION\"])}1' ./src/manifest.firefox.json > ./dist/manifest.json",
     "clean": "rm -r ./dist/* || true",
-    "copy": "cp ./src/content/page.html ./dist && cp -R ./assets ./dist",
+    "copy": "mkdir -p ./dist/assets/icons && cp ./src/content/page.html ./dist && cp ./assets/icons/*.png ./dist/assets/icons/",
     "lint": "yarn lint:eslint && yarn lint:web-ext",
     "lint:eslint": "eslint \"src/**/*.ts\" \"tests/**/*.ts\"",
     "lint:web-ext": "web-ext lint -s dist",
