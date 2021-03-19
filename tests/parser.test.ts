@@ -1,3 +1,4 @@
+import { ParseError } from '@src/background/errors'
 import { Parser } from '../src/background/parser'
 
 const NOW = 1613651325374  // 2021-02-18T12:28:45.374Z  <-- UTC!
@@ -67,4 +68,54 @@ describe('Parser', () => {
         expect(Parser(tokens, NOW)).toBe(erv)
     })
 
+    test('evaluate subtraction with units present', () => {
+        const tokens = [{value:'5', type:'number'},
+                        {value:'m', type:'unit'},
+                        {value:'-', type:'operator'},
+                        {value:'30', type:'number'},
+                        {value:'s', type:'unit'}]
+
+        expect(Parser(tokens)).toEqual(270000)
+    })
+
+    test('evaluate constant time with addition', () => {
+        const tokens = [{value:'14:30', type:'time'},
+                        {value:'+', type:'operator'},
+                        {value:'30', type:'number'},
+                        {value:'m', type:'unit'}]
+        const offset = new Date().getTimezoneOffset()
+        const erv = 2 * 3600000 + (1 + offset + 30) * 60000 + 14 * 1000 + 626  // 2h, 31m, 14s, 626ms
+
+        expect(Parser(tokens, NOW)).toBe(erv)
+    })
+
+    test('evaluate constant time with addition', () => {
+        const tokens = [{value:'14:30', type:'time'},
+                        {value:'-', type:'operator'},
+                        {value:'30', type:'number'},
+                        {value:'m', type:'unit'}]
+        const offset = new Date().getTimezoneOffset()
+        const erv = 2 * 3600000 + (1 + offset - 30) * 60000 + 14 * 1000 + 626  // 1h, 31m, 14s, 626ms
+
+        expect(Parser(tokens, NOW)).toBe(erv)
+    })
+
+    test('throws error on illegal token combination', () => {
+        const tokens = [{value:'21', type:'number'},
+                        {value:'12', type:'number'}]
+        
+        expect(() => {
+            Parser(tokens)
+        }).toThrow(ParseError)
+    })
+
+    test('throws error with multiple absolute time references', () => {
+        const tokens = [{value:'10:30', type:'time'},
+                        {value:'+', type:'operator'},
+                        {value:'12:00', type:'time'}]
+        
+        expect(() => {
+            Parser(tokens)
+        }).toThrow(ParseError)
+    })
 })

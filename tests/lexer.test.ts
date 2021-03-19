@@ -1,5 +1,5 @@
 import { Lexer, Tokenizer } from '../src/background/parser'
-
+import { TokenError } from '../src/background/errors'
 
 describe('Lexer and Tokenizer', () => {
     test('is handling empty command', () => {
@@ -74,6 +74,12 @@ describe('Lexer and Tokenizer', () => {
             {value:' ', type:'whitespace'},
             {value:'15', type:'number'}
         ])
+    })
+
+    test('throws error on invalid input', () => {
+        expect(() => {
+            Lexer(':20', Tokenizer)
+        }).toThrow(TokenError)
     })
 
 })

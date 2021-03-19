@@ -1,4 +1,4 @@
-import { ParseError } from './errors'
+import { ParseError, TokenError } from './errors'
 
 const MILLIS_IN_24H = 86400000  // 24 * 60 * 60 * 1000
 const UNITS_IN_MILLIS: { [unit: string]: number} = {
@@ -112,8 +112,7 @@ export function Tokenizer(stream: Stream): string {
   }
 
   // everything else is error
-  stream.next()
-  return 'error'   // raise TokenError ?
+  throw new TokenError('Invalid token')
 }
 
 
@@ -166,6 +165,10 @@ export function Parser(tokens: Token[], now?: number): number {
     let delta = hours * 3600000 + (minutes + offset) * 60000 - now % MILLIS_IN_24H
     delta =  delta > 0 ? delta : delta + MILLIS_IN_24H
 
+    if (tokens.slice(1).map(t => t.type).indexOf('time') !== -1) {
+      throw new ParseError('Only one absolute time reference allowed.')
+    }
+
     // time
     if (nextToken === null) {
       return delta
@@ -193,7 +196,7 @@ export function Parser(tokens: Token[], now?: number): number {
     throw new ParseError(currentToken.value)
   }
 
-  return -1  // Not supposed to get here...
+  throw new ParseError('Invalid expression.')
 }
 
 
