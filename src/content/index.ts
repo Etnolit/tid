@@ -64,7 +64,7 @@ export function updateClock(): void {
             console.log('Error: ${reason}')
         }
 
-        sending .then(handleResponse, handleError)
+        sending.then(handleResponse, handleError)
 
     } else {
         // Calculate and update numbers on screen
