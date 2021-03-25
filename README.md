@@ -1,3 +1,5 @@
+[![Coverage Status](https://coveralls.io/repos/github/Etnolit/tid/badge.svg?branch=main)](https://coveralls.io/github/Etnolit/tid?branch=main)
+
 tid
 ===
 
