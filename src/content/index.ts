@@ -21,7 +21,17 @@ export function setup(): void {
         getSetupData()
 
         timerUpdateClock = window.setInterval(updateClock, 100)
-    }) 
+
+        const body = <HTMLElement>document.getElementById('body')
+        const info = document.createElement('div')
+        info.id = 'info'
+        info.innerText = 'Press F for full screen.'
+        body.appendChild(info)
+
+        window.setTimeout(() => info.classList.add('hidden'), 3000)
+
+        document.addEventListener("keydown", handleKeyDownEvents);
+    })
 }
 
 
@@ -83,3 +93,19 @@ export function updateClock(): void {
     }
 
 }
+
+export function handleKeyDownEvents(event: KeyboardEvent): void {
+    if (event.key === 'f' && !event.repeat) {
+        toggleFullScreen();
+      }
+}
+
+function toggleFullScreen() {
+    if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      }
+    }
+  }
