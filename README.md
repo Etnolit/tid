@@ -1,4 +1,8 @@
 [![Coverage Status](https://coveralls.io/repos/github/Etnolit/tid/badge.svg?branch=main)](https://coveralls.io/github/Etnolit/tid?branch=main)
+![GitHub](https://img.shields.io/github/license/Etnolit/tid)
+![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/Etnolit/tid)
+![Mozilla Add-on](https://img.shields.io/amo/v/tid)
+![Chrome Web Store](https://img.shields.io/chrome-web-store/v/cfeipfaincfjokilbdofgccimigbincm)
 
 tid
 ===
