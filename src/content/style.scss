@@ -85,3 +85,17 @@ body {
         text-shadow: 0 0 0.03em var(--color-glow);
     }
 }
+
+#info {
+    text-align: center;
+    font-size: 1.2em;
+    font-weight: 400;
+    position: absolute;
+    width: 100%;
+    bottom: 5%;
+    transition: 300ms;
+}
+
+.hidden {
+    opacity: 0;
+}
