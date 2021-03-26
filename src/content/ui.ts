@@ -48,7 +48,7 @@ export class DOMClock {
         this.update()
     }
 
-    private update(now?: number): void {
+    public update(now?: number): void {
         if (!now) now = Date.now()
         const timeLeft = Math.floor((this.end - now) / 1000)
     
@@ -99,8 +99,8 @@ export class DOMClock {
 
 
 export class DOMBar {
-    bar: HTMLElement
-    innerBar: HTMLElement
+    private bar: HTMLElement
+    private innerBar: HTMLElement
 
     private timer: number
     private end: number
