@@ -82,15 +82,15 @@ export function handleMessage(request: MessageEvent, sender: browser.runtime.Mes
       type: "basic",
       title: "Time's up!",
       message: "",
-      iconUrl: "assets/icons/alarm.svg"
+      iconUrl: "assets/icons/alarm-48.png"
     })
 
     const handleResponse = (message?: any) => {
-      console.log('Notification created.')
+      console.log(message)
     }
     
     const handleError = (reason: any) => {
-      console.log('Error: ${reason}')
+      console.log(reason)
     }
 
     sending.then(handleResponse, handleError)
