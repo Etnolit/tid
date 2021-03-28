@@ -1,20 +1,18 @@
 name: CI
 
-on: ["push", "pull_request"]
+on: 
+  push:
+    branches-ignore: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
-  setup:
+  test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-
       - name: Install modules
         run: yarn
 
-  tests:
-    needs: setup
-    runs-on: ubuntu-latest
-    steps:
       - name: Run tests
         run: yarn test --coverage
 
@@ -23,9 +21,11 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
-  linting:
-    needs: setup
+  lint:
     runs-on: ubuntu-latest
     steps:
+      - name: Install modules
+        run: yarn
+
       - name: Run linting
         run: yarn lint:eslint
