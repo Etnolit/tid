@@ -3,18 +3,29 @@ name: CI
 on: ["push", "pull_request"]
 
 jobs:
-  build:
+  setup:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Install modules
-      run: yarn
-    
-    - name: Run tests
-      run: yarn test --coverage
+      - name: Install modules
+        run: yarn
 
-    - name: Coveralls
-      uses: coverallsapp/github-action@master
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
+  tests:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run tests
+        run: yarn test --coverage
+
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  linting:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run linting
+        run: yarn lint:eslint
