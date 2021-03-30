@@ -1,5 +1,6 @@
-import { browser } from 'webextension-polyfill-ts'
+import { browser, Omnibox } from 'webextension-polyfill-ts'
 import { Parser, Lexer, Tokenizer } from './parser'
+import { SuggestionEngine } from './suggestions'
 
 
 type Tab = browser.tabs.Tab
@@ -11,7 +12,7 @@ type Timer = {
 }
 
 let allTimers: Timer[] = []
-
+let suggestionEngine: SuggestionEngine
 
 export function initExtension(): void {
 
@@ -25,10 +26,52 @@ export function initExtension(): void {
     description: `Start a timer.`
   })
 
-  // onInputStarted
   // onInputChanged
-  // onInputEntered
-  // onInputCancelled
+
+  browser.omnibox.onInputStarted.addListener((): void => {
+    if (!suggestionEngine)
+      suggestionEngine = new SuggestionEngine()
+  })
+
+  browser.omnibox.onInputChanged.addListener(
+    (text: string, suggest: (r: Omnibox.SuggestResult[]) => void) => {
+      const suggestions = [
+        {'content': '20m', 'description': '20 minuter'},
+        {'content': '30s', 'description': '30 sekunder'},
+        {'content': '12:00', 'description': 'klockan 12:00'},
+        {'content': '20%', 'description': 'nästa jämna 20 minuter'}
+      ]
+      suggest(suggestions)
+    }
+  )
+
+
+  browser.omnibox.onInputEntered.addListener(
+    (command: string, disposition: browser.omnibox.OnInputEnteredDisposition): void => {
+
+      console.log(command)
+      const storeCommand = browser.storage.local.get(null);
+      storeCommand.then((results) => {
+        console.log( Object.keys(results) )
+      }).catch((error) => {console.log(error)})
+      
+      const write = browser.storage.local.set({'test': 'hallo'})
+      write.then(() => {console.log('Success!')}).catch((error) => {console.log(error)})
+      
+      const now = Date.now()
+      const duration = Parser(Lexer(command, Tokenizer), now)
+      
+      // TODO: Make sure to do something different depending on dispositon.
+      if (disposition === "currentTab") {
+        createTimerPage(now, duration)
+      }
+      if (disposition === "newForegroundTab") {
+        createTimerPage(now, duration)
+      }
+      if (disposition === "newBackgroundTab") {
+        createTimerPage(now, duration)
+      }
+  })
 
   browser.omnibox.onInputEntered.addListener(
     (command: string, disposition: browser.omnibox.OnInputEnteredDisposition): void => {
