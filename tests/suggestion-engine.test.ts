@@ -1,12 +1,12 @@
 import { SuggestionEngine } from '@src/background/suggestion'
 import { browser } from 'webextension-polyfill-ts'
 
-const sleep = (delay: number) => new Promise((resolve) => setTimeout(resolve, delay))
+const wait = (delay: number) => new Promise((resolve) => setTimeout(resolve, delay))
 
 describe('SuggestionEngine', () => {
     test('should return suggestions when no data stored', async () => {
         const getFunction = browser.storage.local.get
-        const mock = jest.fn(() => Promise.resolve([]))
+        const mock = jest.fn(() => Promise.resolve({history: []}))
         browser.storage.local.get = mock
 
         const subject = await new SuggestionEngine()
@@ -16,23 +16,29 @@ describe('SuggestionEngine', () => {
         browser.storage.local.get = getFunction
     })
 
+
     test('should return suggestions when matching stored data', async () => {
         const getFunction = browser.storage.local.get
-        const mock = jest.fn(() => Promise.resolve([
-            {lastUse: 123456, count: 2, command: '20m'}
-        ]))
+        const mock = jest.fn(() => Promise.resolve({history: [
+            {lastUse: 1617114210382, count: 2, command: '10m'}
+        ]}))
         browser.storage.local.get = mock
 
         const subject = await new SuggestionEngine()
 
-        expect(subject.suggest('2')).toContainEqual({content: '20m', description: '20m'})
+        expect(subject.suggest('1')).toContainEqual(
+            expect.objectContaining({
+                content: '10m', 
+                description: expect.any(String)
+            }))
 
         browser.storage.local.get = getFunction
     })
 
+
     test('should sort entries by most recent if same number of uses', async () => {
         const getFunction = browser.storage.local.get
-        const getMock = jest.fn(() => Promise.resolve([]))
+        const getMock = jest.fn(() => Promise.resolve({history: []}))
         browser.storage.local.get = getMock
 
         const setFunction = browser.storage.local.set
@@ -42,7 +48,7 @@ describe('SuggestionEngine', () => {
         const subject = await new SuggestionEngine()
 
         subject.update('20m')
-        await sleep(1)
+        await wait(1) // Wait 1ms
         subject.update('12:00')
 
         expect(getMock).toHaveBeenCalled()
@@ -66,13 +72,14 @@ describe('SuggestionEngine', () => {
         browser.storage.local.set = setFunction
     })
 
+
     test('should update and save correctly', async () => {
         const getFunction = browser.storage.local.get
-        const getMock = jest.fn(() => Promise.resolve([]))
+        const getMock = jest.fn(() => Promise.resolve({history: []}))
         browser.storage.local.get = getMock
 
         const setFunction = browser.storage.local.set
-        const setMock = jest.fn((keys) => Promise.resolve())
+        const setMock = jest.fn(() => Promise.resolve())
         browser.storage.local.set = setMock
 
         const subject = await new SuggestionEngine()

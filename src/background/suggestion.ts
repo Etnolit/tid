@@ -6,31 +6,54 @@ interface Entry {
     command: string
 }
 
+type SuggestResult = Omnibox.SuggestResult
+
 const HISTORY_MAX_LENGTH = 20
 
 const DEFAULT_SUGGESTIONS = [
         {'content': '20m', 'description': '20 minutes'},
         {'content': '30s', 'description': '30 seconds'},
         {'content': '12:00', 'description': 'noon'},
-        {'content': '20%', 'description': 'next even 20 minutes'}
+        {'content': '%20m', 'description': 'next even 20 minutes'}
     ]
 
 export class SuggestionEngine {
     data: Array<Entry> = []
 
     constructor() {
-        this.load().then((data) => this.data = data)
+        this.load().then((data) => {
+            if (Object.prototype.hasOwnProperty.call(data, 'history')) {
+                this.data = data.history
+            } else {
+                this.data = []
+            }
+        })
     }
-    
-    public suggest(command: string): Omnibox.SuggestResult[] {
-        const search = command.replace(/\s+/g, ' ').trimStart()  // Remove some whitespace
 
-        const index = this.data.findIndex((entry) => entry.command.startsWith(search))
-        if (index >= 0) {
-            return [{content: this.data[index].command, description: this.data[index].command}]
+    private convert(entry: Entry): SuggestResult {
+        return {content: entry.command, description: entry.command}
+    }
+
+    public suggest(command: string): SuggestResult[] {
+        const suggestions: Array<SuggestResult> = []
+
+        // Add most recent command to suggestions.
+        if (this.data.length > 0) {
+            const mostRecent = this.data.reduce((a, b) => a.lastUse > b.lastUse ? a : b)
+            suggestions.push(this.convert(mostRecent))
+        }
+        
+        // Add most used matches to suggestions.
+        const search = command.replace(/\s+/g, ' ').trimStart()  // Remove some whitespace
+        const matches = this.data.filter((entry) => entry.command.startsWith(search))
+        if (matches.length > 0) {
+            suggestions.push(...matches.map(this.convert) )
         }
 
-        return DEFAULT_SUGGESTIONS
+        // Add the defaults.
+        suggestions.push(...DEFAULT_SUGGESTIONS)
+
+        return suggestions.slice(0, 6)
     }
     
     public update(command: string): void {

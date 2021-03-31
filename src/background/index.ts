@@ -1,6 +1,6 @@
 import { browser, Omnibox } from 'webextension-polyfill-ts'
 import { Parser, Lexer, Tokenizer } from './parser'
-import { SuggestionEngine } from './suggestions'
+import { SuggestionEngine } from './suggestion'
 
 
 type Tab = browser.tabs.Tab
@@ -26,38 +26,25 @@ export function initExtension(): void {
     description: `Start a timer.`
   })
 
-  // onInputChanged
 
   browser.omnibox.onInputStarted.addListener((): void => {
     if (!suggestionEngine)
       suggestionEngine = new SuggestionEngine()
   })
 
+
   browser.omnibox.onInputChanged.addListener(
-    (text: string, suggest: (r: Omnibox.SuggestResult[]) => void) => {
-      const suggestions = [
-        {'content': '20m', 'description': '20 minuter'},
-        {'content': '30s', 'description': '30 sekunder'},
-        {'content': '12:00', 'description': 'klockan 12:00'},
-        {'content': '20%', 'description': 'nästa jämna 20 minuter'}
-      ]
-      suggest(suggestions)
+    (command: string, suggest: (r: Omnibox.SuggestResult[]) => void) => {
+      
+      suggest(suggestionEngine.suggest(command))
     }
   )
 
 
   browser.omnibox.onInputEntered.addListener(
     (command: string, disposition: browser.omnibox.OnInputEnteredDisposition): void => {
+      suggestionEngine.update(command)
 
-      console.log(command)
-      const storeCommand = browser.storage.local.get(null);
-      storeCommand.then((results) => {
-        console.log( Object.keys(results) )
-      }).catch((error) => {console.log(error)})
-      
-      const write = browser.storage.local.set({'test': 'hallo'})
-      write.then(() => {console.log('Success!')}).catch((error) => {console.log(error)})
-      
       const now = Date.now()
       const duration = Parser(Lexer(command, Tokenizer), now)
       
@@ -72,19 +59,6 @@ export function initExtension(): void {
         createTimerPage(now, duration)
       }
   })
-
-  browser.omnibox.onInputEntered.addListener(
-    (command: string, disposition: browser.omnibox.OnInputEnteredDisposition): void => {
-    console.log(command)
-    
-    const now = Date.now()
-    const duration = Parser(Lexer(command, Tokenizer), now)
-    
-    createTimerPage(now, duration)
-    
-    disposition = "newForegroundTab"
-  })
-
 }
 
 export function createTimerPage(start: number, duration: number): void {
