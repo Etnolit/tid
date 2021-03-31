@@ -2,13 +2,12 @@ import { DOMBar, DOMClock } from '../src/content/ui'
 
 const timestamp = 1616758284343
 
-
 describe('Clock object', () => {
     let clock: DOMClock
 
     beforeEach(() => {
         document.body.innerHTML = '<div id="container" class="container"></div>'
-    
+
         clock = new DOMClock(timestamp)
         document.getElementById('container')?.appendChild(clock.render())
     })
@@ -28,8 +27,8 @@ describe('Clock object', () => {
 
     test.each([
         [1234 * 60 * 1000, ['0', '0', '4', '3', '2', '1']],
-        [  56 * 60 * 1000, ['0', '0', '6', '5',  '',  '']],
-        [       47 * 1000, ['7', '4', '0', '0',  '',  '']]
+        [56 * 60 * 1000, ['0', '0', '6', '5', '', '']],
+        [47 * 1000, ['7', '4', '0', '0', '', '']],
     ])('should be able to set its digits', (delta: number, digits: Array<string>) => {
         const now = timestamp - delta
         clock.update(now)
@@ -41,16 +40,14 @@ describe('Clock object', () => {
         expect(document.getElementById('digit4')?.innerText).toEqual(digits[4])
         expect(document.getElementById('digit5')?.innerText).toEqual(digits[5])
     })
-
 })
-
 
 describe('Bar object', () => {
     let bar: DOMBar
 
     beforeEach(() => {
         document.body.innerHTML = '<div id="container" class="container"></div>'
-    
+
         bar = new DOMBar(timestamp, 20000)
         document.getElementById('container')?.appendChild(bar.render())
     })
@@ -58,7 +55,7 @@ describe('Bar object', () => {
     test('should be able to update position', () => {
         const subject = document.getElementById('inner-bar')
 
-        bar.update(timestamp -10000)
+        bar.update(timestamp - 10000)
 
         expect(subject?.style.width).toEqual('50%')
     })

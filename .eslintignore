@@ -1,3 +1,5 @@
 node_modules
-dist
+artifacts
 build
+coverage
+dist
