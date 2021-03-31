@@ -25,7 +25,8 @@
     },
 
     "permissions": [
-      "notifications"
+      "notifications",
+      "storage"
     ],
 
     "omnibox": {

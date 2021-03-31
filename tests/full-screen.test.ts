@@ -4,7 +4,7 @@ describe('Full screen mode', () => {
     test('should request full screen mode when F key pressed', () => {
         const mock = jest.fn()
         document.documentElement.requestFullscreen = mock;
-        let event = new KeyboardEvent('keydown', {'key': 'f'})
+        const event = new KeyboardEvent('keydown', {'key': 'f'})
         handleKeyDownEvents(event)
 
         expect(mock).toHaveBeenCalled()
@@ -13,7 +13,7 @@ describe('Full screen mode', () => {
     test('should request to exit full screen mode when F key pressed a second time', () => {
         const mock = jest.fn()
         document.exitFullscreen = mock();
-        let event = new KeyboardEvent('keydown', {'key': 'f'})
+        const event = new KeyboardEvent('keydown', {'key': 'f'})
         handleKeyDownEvents(event)
         handleKeyDownEvents(event)
 
@@ -23,7 +23,7 @@ describe('Full screen mode', () => {
     test('should not request full screen mode for repeat events', () => {
         const mock = jest.fn()
         document.documentElement.requestFullscreen = mock;
-        let event = new KeyboardEvent('keydown', {'key': 'f', 'repeat': true})
+        const event = new KeyboardEvent('keydown', {'key': 'f', 'repeat': true})
         handleKeyDownEvents(event)
 
         expect(mock).toHaveBeenCalledTimes(0)

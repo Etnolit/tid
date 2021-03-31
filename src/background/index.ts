@@ -1,5 +1,6 @@
-import { browser } from 'webextension-polyfill-ts'
+import { browser, Omnibox } from 'webextension-polyfill-ts'
 import { Parser, Lexer, Tokenizer } from './parser'
+import { SuggestionEngine } from './suggestion'
 
 
 type Tab = browser.tabs.Tab
@@ -11,7 +12,7 @@ type Timer = {
 }
 
 let allTimers: Timer[] = []
-
+let suggestionEngine: SuggestionEngine
 
 export function initExtension(): void {
 
@@ -25,23 +26,39 @@ export function initExtension(): void {
     description: `Start a timer.`
   })
 
-  // onInputStarted
-  // onInputChanged
-  // onInputEntered
-  // onInputCancelled
+
+  browser.omnibox.onInputStarted.addListener((): void => {
+    if (!suggestionEngine)
+      suggestionEngine = new SuggestionEngine()
+  })
+
+
+  browser.omnibox.onInputChanged.addListener(
+    (command: string, suggest: (r: Omnibox.SuggestResult[]) => void) => {
+      
+      suggest(suggestionEngine.suggest(command))
+    }
+  )
+
 
   browser.omnibox.onInputEntered.addListener(
     (command: string, disposition: browser.omnibox.OnInputEnteredDisposition): void => {
-    console.log(command)
-    
-    const now = Date.now()
-    const duration = Parser(Lexer(command, Tokenizer), now)
-    
-    createTimerPage(now, duration)
-    
-    disposition = "newForegroundTab"
-  })
+      suggestionEngine.update(command)
 
+      const now = Date.now()
+      const duration = Parser(Lexer(command, Tokenizer), now)
+      
+      // TODO: Make sure to do something different depending on dispositon.
+      if (disposition === "currentTab") {
+        createTimerPage(now, duration)
+      }
+      if (disposition === "newForegroundTab") {
+        createTimerPage(now, duration)
+      }
+      if (disposition === "newBackgroundTab") {
+        createTimerPage(now, duration)
+      }
+  })
 }
 
 export function createTimerPage(start: number, duration: number): void {
