@@ -1,17 +1,29 @@
 {
     "root": true,
-    "plugins": [],
-    "extends": [
-        "eslint:recommended",
-        "prettier"
-    ],
+    "parser": "@typescript-eslint/parser",
     "parserOptions": {
         "sourceType": "module"
     },
+    "plugins": ["@typescript-eslint", "sonarjs", "prettier"],
+    "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:sonarjs/recommended",
+        "plugin:prettier/recommended"
+    ],
+    "rules": {},
     "env": {
         "es6": true,
-        "browser": true,
-        "jest": true,
         "commonjs": true
-    }
+    },
+    "overrides": [
+        {
+            "files": "*/**/*.js",
+            "parser": "espree",
+            "parserOptions": { "sourceType": "module" },
+            "plugins": ["prettier"],
+            "extends": ["eslint:recommended", "plugin:sonarjs/recommended", "plugin:prettier/recommended"]
+        }
+    ]
 }

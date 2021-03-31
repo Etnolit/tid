@@ -5,10 +5,10 @@ export class DOMClock {
 
     private timer: number
     private end: number
-    
+
     constructor(timestamp: number) {
         this.end = timestamp
-        
+
         const clock = document.createElement('div')
         clock.id = 'clock'
 
@@ -22,7 +22,7 @@ export class DOMClock {
 
         const rightNumbers = document.createElement('div')
         rightNumbers.id = 'right-numbers'
-        
+
         clock.appendChild(leftNumbers)
         clock.appendChild(separator)
         clock.appendChild(rightNumbers)
@@ -51,16 +51,16 @@ export class DOMClock {
     public update(now?: number): void {
         if (!now) now = Date.now()
         const timeLeft = Math.floor((this.end - now) / 1000)
-    
+
         if (timeLeft < 0) {
             this.flash()
-    
+
             // Request notification
-            const sending = browser.runtime.sendMessage({type: 'notify'})
-    
-//            const handleResponse = (message?: any) => console.log(message)
+            const sending = browser.runtime.sendMessage({ type: 'notify' })
+
+            //            const handleResponse = (message?: any) => console.log(message)
             const handleError = (reason: any) => console.log(reason)
-    
+
             sending.catch(handleError)
 
             window.clearInterval(this.timer)
@@ -68,8 +68,7 @@ export class DOMClock {
             // Calculate and update numbers on screen
             const s = timeLeft % 60
             const m = Math.floor(timeLeft / 60)
-        
-    
+
             this.setDigit(0, s % 10)
             this.setDigit(1, Math.floor(s / 10))
             this.setDigit(2, m % 10)
@@ -77,7 +76,6 @@ export class DOMClock {
             this.setDigit(4, m >= 100 ? Math.floor(m / 100) % 10 : -1)
             this.setDigit(5, m >= 1000 ? Math.floor(m / 1000) % 10 : -1)
         }
-    
     }
 
     private setDigit(index: number, value: number): void {
@@ -96,7 +94,6 @@ export class DOMClock {
         this.clock.classList.add('flash')
     }
 }
-
 
 export class DOMBar {
     private bar: HTMLElement
@@ -127,7 +124,7 @@ export class DOMBar {
     public update(now: number): void {
         const timeLeft = Math.floor((this.end - now) / 1000)
 
-        this.setPosition(timeLeft / (this.duration / 1000) * 100)
+        this.setPosition((timeLeft / (this.duration / 1000)) * 100)
     }
 
     private setPosition(position: number): void {

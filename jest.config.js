@@ -7,6 +7,6 @@ module.exports = {
     moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
     setupFiles: ['jest-webextension-mock'],
     moduleNameMapper: {
-        "^@src[/](.+)": "<rootDir>/src/$1"
-    }
+        '^@src[/](.+)': '<rootDir>/src/$1',
+    },
 }
