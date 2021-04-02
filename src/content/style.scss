@@ -34,6 +34,11 @@ h1 {
     left: 5%;
 }
 
+#title:focus {
+    outline: none;
+    border-bottom: 2px solid rgba(250, 250, 250, 0.5);
+}
+
 #clock {
     display: flex;
 }

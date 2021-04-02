@@ -90,7 +90,6 @@ function activateTitle(event: KeyboardEvent) {
 
     document.body.classList.add('no-bar')
 
-    container.classList.add('with-title')
     container.appendChild(title)
 
     const selection = document.getSelection()
