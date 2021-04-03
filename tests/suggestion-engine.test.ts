@@ -39,7 +39,7 @@ describe('SuggestionEngine', () => {
         browser.storage.local.get = getMock
 
         const setFunction = browser.storage.local.set
-        const setMock = jest.fn((keys) => Promise.resolve())
+        const setMock = jest.fn(() => Promise.resolve())
         browser.storage.local.set = setMock
 
         const subject = await new SuggestionEngine()
