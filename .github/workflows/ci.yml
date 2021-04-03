@@ -1,35 +1,33 @@
 name: CI
 
-on: 
-  push:
-    branches-ignore: [main]
-  pull_request:
-    branches: [main]
-
+on:
+    push:
+        branches: [main]
+    pull_request:
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
+    test:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
 
-      - name: Install modules
-        run: yarn
+            - name: Install modules
+              run: yarn
 
-      - name: Run tests
-        run: yarn test --coverage
+            - name: Run tests
+              run: yarn test --coverage
 
-      - name: Coveralls
-        uses: coverallsapp/github-action@master
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+            - name: Coveralls
+              uses: coverallsapp/github-action@master
+              with:
+                  github-token: ${{ secrets.GITHUB_TOKEN }}
 
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      
-      - name: Install modules
-        run: yarn
+    lint:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
 
-      - name: Run linting
-        run: yarn lint:eslint
+            - name: Install modules
+              run: yarn
+
+            - name: Run linting
+              run: yarn lint:eslint
