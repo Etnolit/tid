@@ -1,12 +1,14 @@
 import { handleKeyDownEvents, setup } from '@src/content/index'
 import { browser } from 'webextension-polyfill-ts'
 
+const BODY_HTML = '<div id="container" class="container"></div>'
+
 describe('Title editor', () => {
     test('should add title when T key pressed', async () => {
         const sendMessageFunction = browser.runtime.sendMessage
         const sendMessageMock = jest.fn(() => Promise.resolve({ message: { end: 1616758284343, duration: 20000 } }))
         browser.runtime.sendMessage = sendMessageMock
-        document.body.innerHTML = '<div id="container" class="container"></div>'
+        document.body.innerHTML = BODY_HTML
 
         await setup()
 
@@ -25,7 +27,7 @@ describe('Title editor', () => {
         const sendMessageFunction = browser.runtime.sendMessage
         const sendMessageMock = jest.fn(() => Promise.resolve({ message: { end: 1616758284343, duration: 20000 } }))
         browser.runtime.sendMessage = sendMessageMock
-        document.body.innerHTML = '<div id="container" class="container"></div>'
+        document.body.innerHTML = BODY_HTML
 
         await setup()
 
@@ -43,7 +45,7 @@ describe('Title editor', () => {
         const sendMessageFunction = browser.runtime.sendMessage
         const sendMessageMock = jest.fn(() => Promise.resolve({ message: { end: 1616758284343, duration: 20000 } }))
         browser.runtime.sendMessage = sendMessageMock
-        document.body.innerHTML = '<div id="container" class="container"></div>'
+        document.body.innerHTML = BODY_HTML
 
         await setup()
 
