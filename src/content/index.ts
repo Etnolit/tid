@@ -86,7 +86,7 @@ function activateTitle(event: KeyboardEvent) {
     title.id = 'title'
     title.setAttribute('contenteditable', 'true')
     title.setAttribute('spellcheck', 'false')
-    title.innerHTML = 'click to edit'
+    title.textContent = 'click to edit'
 
     document.body.classList.add('no-bar')
 
@@ -95,7 +95,7 @@ function activateTitle(event: KeyboardEvent) {
     const selection = document.getSelection()
     const range = document.createRange()
     range.setStart(title.firstChild as Node, 0)
-    range.setEnd(title.firstChild as Node, title.innerHTML.length)
+    range.setEnd(title.firstChild as Node, title.textContent.length)
 
     selection?.removeAllRanges()
     selection?.addRange(range)
