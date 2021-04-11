@@ -12,22 +12,39 @@ body {
     margin: 0;
     width: 100vw;
     height: 100vh;
-    background: linear-gradient(150deg, rgba(255,255,255,0), rgb(66,27,158)),
-                linear-gradient(70deg, rgb(238, 44, 235), rgb(59, 200, 240));
+    background: linear-gradient(150deg, rgba(255, 255, 255, 0), rgb(66, 27, 158)),
+        linear-gradient(70deg, rgb(238, 44, 235), rgb(59, 200, 240));
     overflow: hidden;
 }
 
 #container {
     position: absolute;
-    top: 50%;
+    top: 40%;
     transform: translateY(-50%);
+}
+
+h1 {
+    text-align: center;
+    text-shadow: 0 0 0.075em var(--color-glow);
+    font-size: 8vw;
+    margin: 0;
+    position: absolute;
+    top: 100%;
+    width: 90%;
+    left: 5%;
+}
+
+#title:focus {
+    outline: none;
+    border-bottom: 2px solid rgba(250, 250, 250, 0.5);
 }
 
 #clock {
     display: flex;
 }
 
-#left-numbers, #right-numbers {
+#left-numbers,
+#right-numbers {
     width: 50vw;
     display: flex;
 }
@@ -42,7 +59,8 @@ body {
 
 // .separator { }
 
-.digit, .separator {
+.digit,
+.separator {
     font-size: 20vw;
     text-align: center;
     text-shadow: 0 0 0.03em var(--color-glow);
@@ -55,7 +73,7 @@ body {
 
 #bar {
     position: absolute;
-    top: 110%;
+    top: 120%;
     height: 0.5vw;
     width: 90%;
     left: 5%;
@@ -77,11 +95,20 @@ body {
     animation: text-flash 1s infinite;
 }
 
+.no-bar #bar {
+    display: none;
+}
+
 @keyframes text-flash {
-    10%, 30%, 50% {
+    10%,
+    30%,
+    50% {
         text-shadow: 0 0 0.06em var(--color-flash);
     }
-    0%, 20%, 40%, 60% {
+    0%,
+    20%,
+    40%,
+    60% {
         text-shadow: 0 0 0.03em var(--color-glow);
     }
 }
@@ -98,4 +125,11 @@ body {
 
 .hidden {
     opacity: 0;
+}
+
+/* When higher then wide. */
+@media (max-aspect-ratio: 1/1) {
+    #container {
+        top: 25%;
+    }
 }

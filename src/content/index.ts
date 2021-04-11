@@ -3,6 +3,7 @@ import { DOMBar, DOMClock } from './ui'
 
 let clock: DOMClock
 let bar: DOMBar
+let title: HTMLElement
 
 let end = 0
 let duration = 0
@@ -48,8 +49,22 @@ export function getSetupData(): Promise<void> {
 }
 
 export function handleKeyDownEvents(event: KeyboardEvent): void {
-    if (event.key === 'f' && !event.repeat) {
+    function titleIsActive(): boolean {
+        return title && document.activeElement === title
+    }
+
+    if (event.key === 'f' && !event.repeat && !titleIsActive()) {
         toggleFullScreen()
+    }
+
+    if (event.key === 't' && !event.repeat && !title) {
+        activateTitle(event)
+    }
+
+    if (event.key === 'Enter' && !event.shiftKey && title) {
+        event.preventDefault()
+        title.blur()
+        document.getSelection()?.removeAllRanges()
     }
 }
 
@@ -61,4 +76,27 @@ function toggleFullScreen() {
             document.exitFullscreen()
         }
     }
+}
+
+function activateTitle(event: KeyboardEvent) {
+    event.preventDefault()
+    const container = <HTMLElement>document.getElementById('container')
+
+    title = document.createElement('h1')
+    title.id = 'title'
+    title.setAttribute('contenteditable', 'true')
+    title.setAttribute('spellcheck', 'false')
+    title.textContent = 'click to edit'
+
+    document.body.classList.add('no-bar')
+
+    container.appendChild(title)
+
+    const selection = document.getSelection()
+    const range = document.createRange()
+    range.setStart(title.firstChild as Node, 0)
+    range.setEnd(title.firstChild as Node, title.textContent.length)
+
+    selection?.removeAllRanges()
+    selection?.addRange(range)
 }
