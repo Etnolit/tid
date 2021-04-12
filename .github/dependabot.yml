@@ -1,0 +1,9 @@
+# Basic Dependabot config
+
+version: 2
+updates:
+  # Enable updates for npm.
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
