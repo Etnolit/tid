@@ -33,7 +33,9 @@ Operator | Example
 
 Installation
 ------------
-The extension is available for FireFox at https://addons.mozilla.org.
+The extension is available for [Firefox](https://addons.mozilla.org/firefox/addon/tid), 
+[Chrome](https://chrome.google.com/webstore/detail/tid/cfeipfaincfjokilbdofgccimigbincm), 
+and [Edge](https://microsoftedge.microsoft.com/addons/detail/tid/jpfbhfnnmijjgamgpallbancgeodfcgj).
 
 Build
 -----
