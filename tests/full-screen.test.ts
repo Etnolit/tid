@@ -1,5 +1,4 @@
 import { handleKeyDownEvents } from '@src/content/index'
-import { doc } from 'prettier'
 
 describe('Full screen mode', () => {
     test('should request full screen mode when F key pressed', () => {

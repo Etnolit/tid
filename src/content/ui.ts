@@ -59,7 +59,7 @@ export class DOMClock {
             const sending = browser.runtime.sendMessage({ type: 'notify' })
 
             //            const handleResponse = (message?: any) => console.log(message)
-            const handleError = (reason: any) => console.log(reason)
+            const handleError = (reason: unknown) => console.log(reason)
 
             sending.catch(handleError)
 

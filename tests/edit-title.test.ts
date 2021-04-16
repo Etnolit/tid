@@ -1,5 +1,5 @@
 import { handleKeyDownEvents, setup } from '@src/content/index'
-import { Browser, browser } from 'webextension-polyfill-ts'
+import { browser } from 'webextension-polyfill-ts'
 
 const BODY_HTML = '<div id="container" class="container"></div>'
 const sendMessageFunction = browser.runtime.sendMessage
