@@ -36,16 +36,16 @@ export function setup(): Promise<void> {
 export function getSetupData(): Promise<void> {
     const sending = browser.runtime.sendMessage({ type: 'setup' })
 
-    const handleResponse = (message: any) => {
+    const handleResponse = (message: { timestamp: number; duration: number }) => {
         end = message.timestamp
         duration = message.duration
     }
 
-    const handleError = (reason: any) => {
+    const handleError = (reason: unknown) => {
         console.log(`Error: ${reason}`)
     }
 
-    return sending.then(handleResponse) //, handleError) //.catch((error) => console.log(error))
+    return sending.then(handleResponse).catch(handleError)
 }
 
 export function handleKeyDownEvents(event: KeyboardEvent): void {

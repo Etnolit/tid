@@ -95,11 +95,11 @@ export function handleMessage(
             iconUrl: 'assets/icons/alarm-48.png',
         })
 
-        const handleResponse = (message?: any) => {
+        const handleResponse = (message?: unknown) => {
             console.log(message)
         }
 
-        const handleError = (reason: any) => {
+        const handleError = (reason: unknown) => {
             console.log(reason)
         }
 

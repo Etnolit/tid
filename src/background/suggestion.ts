@@ -71,7 +71,7 @@ export class SuggestionEngine {
         this.save().then()
     }
 
-    public load(): Promise<any> {
+    public load(): Promise<{ [s: string]: Entry[] }> {
         return browser.storage.local.get('history')
     }
 
