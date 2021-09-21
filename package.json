@@ -41,7 +41,7 @@
         "jest-cli": "^26.6.3",
         "jest-webextension-mock": "^3.7.9",
         "prettier": "^2.1.2",
-        "sass": "^1.32.7",
+        "sass": "^1.42.0",
         "style-loader": "^2.0.0",
         "ts-jest": "^26.5.5",
         "ts-loader": "^8.0.16",
